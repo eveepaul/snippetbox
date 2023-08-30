@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"strconv"
 	"time"
 )
 
@@ -18,16 +19,15 @@ type SnippetModel struct {
 }
 
 func (m *SnippetModel) Insert(title string, content string, expires int) (int, error) {
-	stmt := `INSERT INTO snippets (title, content, expires) VALUES(?,?,DATETIME('now'), DATETIME('now', '+? days))`
-
-	result, err := m.DB.Exec(stmt, title, content, expires)
+	stmt := `INSERT INTO snippets (title, content,created,expires) VALUES(?,?,DATETIME('now'),DATETIME('now', '+` + strconv.Itoa(expires) + ` days'))`
+	result, err := m.DB.Exec(stmt, title, content)
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return 0, nil
+		return 0, err
 	}
 
 	return int(id), nil
