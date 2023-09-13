@@ -7,16 +7,19 @@
 >
     <div>
         <label for="title">Title:</label>
-
+        {{with .Form.FieldErrors.title}}
+        <label class='error'>{{.}}</label>
+        {{end}}
         <input
             type="text"
             name="title"
         />
-
     </div>
     <div>
         <label for="content">Content:</label>
-
+        {{with .Form.FieldErrors.content}}
+        <label class='error'>{{.}}</label>
+        {{end}}
         <textarea
             name="content"
             id="content"
@@ -26,21 +29,32 @@
     </div>
     <div>
         <label for="expires">Delete in:</label>
+        {{with .Form.FieldErrors.expires}}
+        <label class='error'>{{.}}</label>
+        {{end}}
         <input
             type="radio"
             name="expires"
             value="365"
-            checked
+            {{if(eq .Form.Expires 365)}}
+                checked
+            {{end}}
         > One year
         <input
             type="radio"
             name="expires"
             value="7"
+            {{if(eq .Form.Expires 7)}}
+                checked
+            {{end}}
         > One week
         <input
             type="radio"
             name="expires"
             value="1"
+            {{if(eq .Form.Expires 1)}}
+                checked
+            {{end}}
         > One day
     </div>
     <div>
